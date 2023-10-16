@@ -1,0 +1,183 @@
+FCP HISTORY  substantive or user related changes only
+-----------
+
+
+--- 7.04  2009-11-19
+
+
+(1) DataComm/Refresh: fix left panel controls visibility problem
+(2) MPSample/ambient_mp_init: prevent spurious 0x00 power_up_clear
+
+
+--- 7.03  2009-11-13
+
+
+(1) Ring and embedded multiport data channels can now be IP
+Socket.pas -- Function unit added
+DataComm.pas .dfm -- Extensive changes to support IP
+Old .cfg files are still good
+Mostly a test of the DataComm and Socket code
+Have tested with TCP/UDP, wired/wireless, LiCor 6262/840
+
+
+--- 7.02  2009-10-07
+
+
+(1) DataComm and Optomux units:
+For serial interfaces, Optomux now reads a terminated string
+through DataComm.  Previously, Optomux looped over single
+character reads.  To parallel IP reads, which will be done
+as whole packets.
+
+
+--- 7.01  2009-08-17
+
+
+(1) Replace comm_dp4 and daqcrec by Serial and DataComm.Ports[].
+First step towards upgrading data communications options to
+include IP.  Units changed are COMD, LICOR, Watchdog, MPSample,
+GLOBALS, Main, COMS, COMP, OPTOMUX, DataComm.
+
+
+--- 7.00  2009-07-30
+
+
+(1) FCP.dpr only
+Change version number to 7.00.  Otherwise identical to version 6.77.
+This will be the starting point for program changes for the next
+generation of FACE experiments.
+
+
+--- 6.77  2009-01-22
+
+
+(1) Watchdog
+OnClickButton: Impose 20s floor and granularity on Timeout.txt
+Pet/ffpwcnt:   Fix bug by replacing lobyte:= by value:=
+
+(1) TEI in comp/analog_in
+Add line error := error OR (volts >= offscale);
+This will force setting comm_err[] which should prevent error
+flags from getting into integrals.  May have bad side effects.
+
+
+--- 6.76  2007-06-15
+
+
+(1) COMP: Change WI [O3] PEAK target from 100 to 120 ppb
+(2) RIV: Implement <Help> as LblForm and update
+(3) Main: Don't call old_consoles if statscr is already true
+(4) COMS: Don't integrate agcont, agc1m, agc5m, gc_mp3s[] if comm_err[]
+(5) Alarms: ShowHint true; write Hint for enclosure temperature limit
+
+
+--- 6.75  2007-05-31
+
+
+(1) TEI49C: Protect against checksums in 49I responses
+
+
+--- 6.74  2007-03-13
+
+
+(1) VVP TESTING DID NOT APPLY TO NC1 ONLY
+(2) ADDED MARCH 2007 ONLY AS WELL
+(3) DEFAULT IS NOW 8 VVP OPEN
+
+
+--- 6.73  2007-02-28
+
+
+(1) SIMULATION MODE VALUES OF WIND DIRECTION
+
+Easier checking of VVP pattern related code changes
+
+(2) OAK RIDGE VAPORIZER CYCLING
+
+Applies only to site TN1.  If in proportional valve
+alarm and grab valve read back value is less than
+90% of valve set to value, then CInteg is changed to
+5% of offscale.
+
+(3) VVP PATTERN TESTING
+
+Applies only to site NC1.  On odd days-of-year Ring 2
+is set to 8-valve open pattern.  On even days-of-year
+Ring 4 is.  Wind down pattern not affected.
+
+
+
+--- 6.72  2006-09-24
+
+
+(1) CHANGING ENCLOSURE TEMPERATURE ALARM SET POINT
+
+See Alarms > ? Help
+
+Each ring (actually replicate) has a separate set point.
+
+Applies to either enclosure or auxiliary temperature.
+(AZ2 and WI1 only)
+
+Change dialog boxes are modal.  Sampling, control, etc.
+are suspended so make a change quickly.
+
+Change is not saved to disk.  Default values will be
+reinstated if program is restarted.  If you switch
+"enclosure temperature" among shed air temperature,
+electronics box temperature, gas analyzer cell temperature,
+compressor head temperature, etc., request a change
+in your site specific default values.
+
+
+
+--- 6.71  2006-09-22
+
+
+(1) WINDOW'S APPLICATION EVENT LOG
+
+When starting or stopping normally, FCP now writes to
+Window's Application Event Log, which includes date/time.
+
+To view events,
+Start > Control panel > Administrative tools > Event log
+Select Application in left panel.
+
+On menu bar, see Help > Help topics > Event viewer
+for things to do with a log, including filters, saving as.
+
+EventSource: FCP
+
+EventID:  50000  Starting program
+          50001  File information (.exe, .cfg, .def)
+          50002  Shutting down
+          50003  Shutdown aborted
+          50004  Stopping (program exit)
+          50005  FatalErr calls
+
+Normally a 50000 is preceded by a 50004.
+But if the program ended abnormally or the OS
+crashed, there will be no 50004.
+
+The normal sequence is 50000 50001 50002 50004
+when staged shutdown is used to stop FCP.
+
+The 50002 will be missing if immediate program
+exit was requested.
+
+There are many reasons why the FatalErr procedure
+may be called during program startup.  The
+sequence may be 50000 50005 50004 e.g. CFG file not found
+or 50000 50001 50005 50004 e.g. a SET file missing.
+
+Double click, or right click, on an event line to
+see event properties.  Scroll through events using the
+up and down arrow controls on the form (not the keyboard).
+
+The verbiage in "Description" is meaningless.  I refuse
+to do what Microsoft expects to be done here, as you can
+probably guess by reading it.
+
+I put additional information about the event in the "Data"
+section.  This has a vertical scroll bar.
+

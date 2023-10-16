@@ -1,0 +1,307 @@
+
+LINE  MEANING  2012-02-01
+----  --------------------------------------------------
+1     Site id (3 characters).  Used for site specific IF statements.
+2     [1] Site latitude (N+), [2] longitude (E+),  [3] altitude (m), 
+      [4] time zone (EST = -5), [5] time zone name (e.g. CDT)
+3     [1] Number of rings
+      [2] Bootup ring view pattern clockwise from upper left (vestige of AZ)
+      [3] Single character labels [1..F] for ring screens, filenames, etc.
+        (see also Line 17).
+4     Number of valves per ring
+5     Valve open pattern with wind above threshold from east
+6     Valve open pattern with wind below threshold
+7     Valve open pattern when run is off
+8     Fail/safe valve pattern (what it is with no power or pressure)
+9     [1] Hard disk data storage path (including terminal \, if any)
+      [2] Mirror network storage path (use NONE if there is none)
+10    Rings' DAQC port
+11    Remote dial-in port (usually for reference only since a TSR is used)
+12    CO2 storage/vaporizer area
+13,14 Data transfer to multiport(s) or instrumentation platform
+        If "protocol" is a network drive:\subdirectory\file then 
+        "port" must be 0 and this program will write information 
+        for all rings to that file every "channel" seconds.
+        In that case, MP-A (line 13) is used for information for
+        multiports and MP-B (line 14) for information for platform,
+        assuming for now the latter need will exist and be different.
+15    UTC time device
+16    Watchdog location ("channel" contains the timeout in seconds)
+
+Format for port configuration lines (x..y)
+
+Serial--
+  1) Key
+  2) Com (1..256)
+  3) Speed
+  4) Databits
+  5) Parity
+  6) Stopbits
+  7) Timeout ms
+  8) Protocol
+
+Bus-- use 0x notation for hexadecimal
+  1) Key
+  2) 0
+  3) Base
+  4) Address
+  5) Channel
+  6) Protocol
+
+IP--
+  1) Key
+  2) RemotePort
+  3) IP
+  4) Mode (TCP or UDP)
+  5) LocalPort (use 0 if TCP)
+  6) Timeout ms
+  7) Protocol
+
+Recognized protocol strings for DAQC configuration:
+  OS        Opto22 serial
+  DS        duTec serial
+  FE        Festo ethernet
+  WD1000    Ind. Comp. Source watchdog timer
+  WDT500    Ind. Comp. Source watchdog timer
+  WDT501    Ind. Comp. Source watchdog timer
+  FFPWC     Outsource Eng. & Manu. watchdog board in "ISA mode" Direct I/O
+  FFPWCNT   Outsource Eng. & Manu. watchdog board in "ISA mode" NT driver
+  SBWD      Serial bios activated watchdog (RTS and Tx)
+  LPT1      Parallel port LPT1 DATA0 activated watchdog (also LPT2, LPT3)
+  CTS-10    Ind. Comp. Source WWV receiver
+  TSR       Terminate & Stay Resident.  Not under COMyy's control.
+  d:\*      Read/write to network drive\subdirectory\file named (: required)
+
+/// IMBEDDED MULTIPORT SAMPLER
+/// Following line 16 is one optional 800 line.  It has one parameter
+/// which is the ambient multiport configuration file name.
+/// A file name of NONE is equivalent to having no 800 line at all,
+/// i.e., ambient multiport is considered not to exist.
+/// Concentration variables are linked (associated with) the imbedded
+/// multiport nodes using the special ADC range code 800 (see below).
+
+/// NET FILES
+/// Following line 16 (or 800) are zero or more "network information file"
+/// definition lines.  They are optional.  Each begins with the
+/// sequence number 90n where n = [0..9] is a unique id.  Sensors are linked
+/// (associated with) a net file by these numbers (see 9xx ADC range code).
+/// Format:  90n  [d:path\]filename  end-of-line  field_separator
+/// End-of-line and field_separator can be specified as either (1) one of the
+/// special strings CR, LF or SP, (2) the ordinal of the character desired,
+/// e.g. 10 (linefeed), or (3) a printable character repeated 3 times eg $$$
+/// Example: 902  S:OZONE1.ACO  13  SP  specifies file id = 2, the input file
+/// is OZONE1.ACO on mapped network drive S:, carriage-return is the record
+/// terminator, and the field separator is a space.
+/// Reserved ids: 901 write out [CO2]control (WI1 North rep only)
+///               902 stream LOGG ASCII data, period = ORD(sep) seconds
+///               9xx -future-
+
+/// the following lines are repeated for each ring               ///
+/// address/channel are associated with the "RINGS" port Line 10 ///
+/// an address of -1 means that the sensor doesn't exist         ///
+/// engineering conversion:                                      ///
+    DIGITAL ONLY
+      invert:  0 --> FALSE; 1 --> invert bit upon input or output
+    ANALOG ONLY
+      range:     ADC or DAC range code -- see below
+      gain:      engineering units per volt
+      offset:    engineering units             X = gain*V + offset
+      offscale:  this value is used if daq error detected (input)
+                 or computed set_to is out of range (output)
+    "unit"     physical unit (analog only)
+    "name"     what this variable is
+
+Range codes for ADC and DAC:
+
+      (1) ABS (range) < 100
+        (a) range > 0     ---> ADC/DAC range is 0 to "range" volts
+        (b) range < 0     ---> ADC/DAC range is "-range" to "+range" volts
+
+      (2) 100 < range <= 199 -- Temperature probe modules
+     
+                ---Nominal---
+        Range   Gain   Offset   Probe type, modules              Init data
+        -----  -----   ------   -------------------------------  ---------
+         109     435        0   duTec ITCE      Opto22 AD19T        0x09
+         104     700        0         ITCJ             AD5/AD5T     0x04
+         120     830      -80         ITCJ-1                        0x14
+         105    1024     -100         ITCK             AD8/AD8T     0x05
+         121    1360     -110         ITCK-1                        0x15
+         106     960        0         ITCR             AD17T        0x06
+         122    1760        0         ITCR-1                        0x16
+         107    1034        0         ITCS             AD17T        0x07
+         123    1760        0         ITCS-1                        0x17
+         108     424     -200         ITCT             AD18T        0x08
+         124     520     -120         ITCT-1                        0x18
+         140     150        0         ITCT-2                        0x28
+         102     200      -50                          AD14T        0x02
+         103     400      -50         ITR100           AD10T        0x03
+         119     100        0         ITR100-1                      0x13
+         101     338.4   -188.4       ITP590           AD4          0x01
+         117     200      -50         ITP590-1                      0x11
+
+      (3) 200 < range <= 299 -- Campbell marketed thermistor
+     
+        Range   Gain   Offset   ADC Used  Remarks
+        -----  -----   ------   --------  --------------------
+         225    1/Vx        0    25 mV    "volts" = Vs
+         250    1/Vx        0    50 mV    "value" = gain*volts = Vs/Vx
+                                          "variable" = poly(Vs/Vx*800)
+                                                     = temperature oC
+
+      (4) 300 < range <= 399 -- Relative humidity probe, linearized output
+     
+        Range   Gain   Offset   Remarks
+        -----  -----   ------   --------------------
+         3vv     A          B   vv = ADC range 0 to vv volts,
+                                e.g. 305 for 0-5 VDC ADC.
+                                A,B = conversion from voltage to RH [%].
+                                Using air temperature and RH, program
+                                calculates water vapor partial pressure [Pa],
+                                which is displayed and stored on disk.
+                                If the 3vv range code is not used, program
+                                will store RH.  However, the <F2> Utilities
+                                <F10> Water Vapor Calculations page will be
+                                jibberish, water vapor labels will be wrong,
+                                and the line graph axes must be changed.
+
+      (5) 400                   ASCII line input from a data port
+     
+          ADDRESS               Virtual port number in DataComm.Ports[]
+          CHANNEL   0..15       Field number in record -- 0 based !
+          RANGE     400         
+          GAIN/OFFSET           As usual
+          OFFSCALE              As usual
+      
+      (6) 800                   Imbedded multiport sampler
+                                FACE concentration variable will be copied 
+                                from the node indicated by CHANNEL.  (This is
+                                not the same as the MP duTec channel or the
+                                manifold valve number.  Nodes are defined
+                                in the imbedded multiport configuration file.
+     
+          ADDRESS               Set to 0
+          CHANNEL   0..15       Node number in multiport configuration file.
+          RANGE     800         Associate variable with imbedded multiport.
+          GAIN/OFFSET           Applied to the value read from the node.
+          OFFSCALE              Flag value if MP measurement is stale.
+      
+      (7) 900 < range <= 909    Network information file.
+                                Must be fixed record length text file with 
+                                unique end of line flag and unique field 
+                                separator character. 
+                                See file definition entries above following 
+                                line 16.
+     
+          ADDRESS               Set to 0
+          CHANNEL   0..15       Field number  ZERO BASED COUNTING
+          RANGE     900..909    Associate a sensor with a file defined above
+          GAIN/OFFSET           Applied to the value read from the network.
+                                Set to 1.0 & 0.0 if program writing the
+                                network file does engineering conversion
+                                and corrections.
+      
+      (8) Channel = 21 (LiCor 6252/6262 serial read) only
+          Range is set to desired LiCor 62x2 "channel code"
+          Use address = duTec MC for direct ascii read through a duTec
+     
+        Range   Gain   Offset   Remarks
+        -----  -----   ------   ------------------------------
+         22      1          0    [CO2] umol/mol
+         34      1000       0    pH2O  kPa       rescaled to Pa
+         42      1          0    Tcell oC
+         43      1          0    Patm  kPa
+
+      (9) Channel = 22 (LiCor 820 Gas Hound serial read) only
+          Channel = 24 (LiCor 840 Gas Hound serial read) only
+
+          Use address = duTec MC for direct ascii read through a duTec
+     
+        Range   Gain   Offset   Remarks
+        -----  -----   ------   ------------------------------
+
+     (10) Channel = 4x e.g. 49 (TEI 4xC serial read) only
+          Channel [40..49] is instrument identification number
+          Range is set to desired variable as per table
+          Use address = duTec MC for direct ascii read through a duTec
+          Note: duTec auxiliary port initialized each time
+                Range=1 [O3] is accessed but only this range.
+                Therefore, reading [O3] must be in .CFG file
+                for any unit in the field in order to get
+                bench temperature, pressure, etc.
+     
+        Range   Gain   Offset   Variable  Unit  Remarks
+        -----  -----   ------   --------  ----  --------------
+          1      ?          0    [O3]     ?     rescale to ppb
+          2      0.133322   0    Patm     mmHg  rescaled to kPa
+          3      1          0    Tbench   oC
+          4      1          0    Flow A   liter/minute
+          5      1          0    Flow B   liter/minute
+
+     (11) Current (except using sensing resistor), frequency, etc.
+          modules are not supported at this time.
+
+      Examples:     10.0    ADC range is 0 to 10 volts
+                    -5.0    ADC range is -5 to +5 volts
+                   0.050    ADC range is 0 to 50 mV (0.050 V)
+                     124    duTec ITCT-1 module (Optomux code 18 hex)
+
+LINE    MEANING
+----    --------------------------------------------------
+17      Flags begining of a ring's specific input
+        Can contain optional 16-character screen descriptor in " "'s
+18      Address, channel, engineering conversion -- [GAS] treatment
+19                                               -- [GAS] control
+20                                               -- [GAS] ambient
+21                                               -- wind speed
+22                                               -- wind direction
+23                                               -- PV response ADC
+24                                               -- barometric pressure
+25                                               -- solar radiation (eg. PAR)
+26                                               -- water vapor (eg. pH2O)
+27                                               -- temperature #1 (eg. air)
+28                                               -- temperature #2 (eg. encl)
+29*                                              -- PV control DAC
+30      Low address, channels per address        -- VVP open treatment  (DO)
+31        (Multiple boards must be contiguous)   -- VVP open control    (DO)
+32                                               -- VVP close           (DO)
+33      Address, channel, "name"                 -- fan rotatation treatment (DI)
+34                                               -- fan rotatation control   (DI)
+35                                               -- gas pressure   (DI)
+36,37,38,39                                      -- PS checks      (DI)
+40**                                             -- fan on/off treatment (DO)
+41                                               -- fan on/off control   (DO)
+42                                               -- gas on/off (DO)
+43                                               -- IRGA zero  (DO)
+44                                               -- IRGA span  (DO)
+45      (2nd relay must be at next channel)      -- 1st PropValv Motor Relay
+46      Data backup path (including terminal \, if any)
+47      Persistance parameters for trailer alarm and dialout.
+          Pairs of integers of the number of repeated errcheck failures
+          (currently about 1 minute apart) required for activation.
+          A value of -1 for dialout means that alarm not used for dialout.
+          The sensor for an alarm must "exist"; otherwise an alarm is ignored.
+            pair 0: Proportional valve
+                 1: Gas concentration
+                 2: No ambient signal
+                 3: DAQC communications
+                 4: Fan rotation -- treatment
+                 5: Fan rotation -- control
+                 6: Gas supply
+                 7: PS#1  (see "name" field of line 36)
+                 8: PS#2  (see "name" field of line 37)
+                 9: PS#3  (see "name" field of line 38)
+                10: PS#4  (see "name" field of line 39)
+                11: Temperature #2 (often used for enclosure temperature)
+                12: Wind direction stuck
+        Last entry on line is audible alarm Windows.MessageBeep code.
+          Try -1, 0, or 48.
+          Make sure "Mute" is unchecked and "Volume" at maximum.
+48      Flags end of a ring's specific input
+
+*   Must exist and be first DAC channel.  Use channel=16 if really none.
+**  Must exist and be first miscellaneous digital output channel.
+
+Lines 17 to 48 repeated for each replicate!!
+
+++++++++++++++++++END+++++++++++++++++++++++

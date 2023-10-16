@@ -1,0 +1,14 @@
+1   1 0x3F8  4 19200 8 1 N  DS    PORT,BASE,IRQ,BPS,DATA,STOP,PARITY,PROTOCOL
+2      0x00 21 22  1  0  999  "umol/mol"  "[gas]"
+3        -1  0  0  1  0  999  "L/min"     "Flow"
+4      0x40  0  0                         "+24VAC"
+5   6                             NUMBER OF NODES
+61  7    25 5   -99   2  0        CHAN, TP, TS, MINFLOW, REP, CLASS
+62  1    25 5   -99   2  1        ; class = 0 --> ambient ring or remote location
+63  7    25 5   -99   3  0        ; class = 1 --> control ring
+64  6    25 5   -99   3  1        ; class = 2 --> fumigation ring
+65  7    25 5   -99   4  0
+66  5    25 5   -99   4  1        
+FOR HELP, SEE FILE AMBMPDEF.TXT
+END-OF-FILE AMBIENT MULTIPORT FOR NC1
+(J.N. 2002-07-20)

@@ -1,0 +1,95 @@
+-------------------- AMBIENT MULTIPORT FILE HELP ----------------------
+2004-12-02  J.N.
+
+An imbedded ambient multiport is declared using an optional "800" line 
+  after line 16 of the FCP configuration (CFG) file.  The only argument
+  on this line is the [path]filename of a hardware configuration / node
+  definition (DEF) file.
+
+The filename NONE is equivalent to having no 800 line at all, i.e. the 
+  program will not use an imbedded ambient/control gas concentration 
+  multiport.
+
+Sample lines:
+800  NONE                           AMBIENT MULTIPORT DEFINITION FILE
+800  F99NC1-6.DEF                   AMBIENT MULTIPORT DEFINITION FILE
+800  E:\FACEPROG\COM\TEST.DEF       AMBIENT MULTIPORT DEFINITION FILE
+
+An explicit control or ambient [gas] measurement (see facility .CFG)
+  takes precedence.
+
+NOTE!!  If the ambient multiport uses the same communications port
+  as that for ring data acquisition and control, the port parameters
+  DEFINED HERE HAVE PRECEDENCE simply because they are read second
+  and overwrite any prior settings.
+
+If an imbedded multiport is being defined, its configuration file has 
+  the following format:
+
+  LINE FIELD CONTENTS
+    1    1    1           The number "1" without quotes
+    1    2    Port        COMn serial port e.g. "4"
+    1    3    Address     I/O address of port (ignored WinNT+)
+    1    4    IRQ         IRQ                 (ignored WinNT+)
+    1    5    Speed       Bps
+    1    6    DataBits    "8"
+    1    7    StopBits    "1"
+    1    8    Parity      "N"
+    1    9    Protocol    The string "DS"
+
+    2    1    2           The number "2" -- Gas concentration
+    2    2    Address     Network address
+    2    3    Channel     See description of analog input in CFG.TXT
+    2    4    Range       See description of analog input in CFG.TXT
+    2    5    Gain        Engineering units per volt
+    2    6    Offset      In engineering units
+    2    7    Offscale    Error return value
+    2    8    "unit"
+    2    9    "name"
+
+    3    1    3           The number "3" -- Sample flow meter
+      Same variables as previous line.
+
+    4    1    4           The number "4" -- Good bit input
+    4    2    Address     Network address
+    4    3    Channel     See description of digital input in CFG.TXT
+    4    4    Invert?     Set to "1" to invert input; "0" is normal
+                          (Possibly inverted) input logical 1 is good
+
+    5    1    5           The number "5"
+    5    2    Address     Solenoid/valve board network address
+    5    3    N           Total number of nodes (sampling points)
+
+    6x   1    I           Intake channel number
+    7x                      Normally 0..15
+    etc.                    -1: Skip code -- see below
+    6x   2    TP          Purge time in seconds, e.g. 55
+    6x   3    TS          Sample time in seconds, e.g. 5
+    6x   4    MIN_FLOW    Miniumum flow requirement
+    6x   5    TIMEOUT     Seconds since last good measurement before
+                          that value is flagged "stale"  
+
+SPECIAL CHANNEL CODES
+
+-1  This entry is skipped (ignored but still counts in Line 5 N value)
+
+Line 6x is repeated N-1 more times for each node.
+Program stops on too few lines.
+No warning given on too many lines.
+Nodes are sampled in the order given in this file. <-----------
+
+
+SAMPLE FILE
+
+1   1 0x3F8  4 19200 8 1 N  DS    PORT,BASE,IRQ,BPS,DATA,STOP,PARITY,PROTOCOL
+2      0x00 21 22  1  0  999  "umol/mol"  "[gas]"
+3        -1  0  0  1  0  999  "L/min"     "Flow"
+4      0x40  0  0             "24VAC"
+5   0xC0 4                        SOLENOID/VALVE BOARD ADDR, NUMBER OF NODES
+60  7    25 5   -99   720         CHAN, TP, TS, MINFLOW, TIMEOUT
+61  1    25 5   -99   720
+62  6    25 5   -99   720
+63  5    25 5   -99   720         
+FOR HELP, SEE FILE AMBMPDEF.TXT
+END-OF-FILE AMBIENT MULTIPORT FOR NC1
+(J.N. 2004-12-02)

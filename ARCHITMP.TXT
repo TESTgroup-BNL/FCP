@@ -1,0 +1,77 @@
+                                                          ARCHITMP.TXT
+                                                          7 January 1999
+
+Since we have lost several investigators who have held their breadth
+waiting for the "archive" option of the COM program to be completed,
+I am sending a description of using the "simulation" option as
+a temporary solution for looking at line graphs.
+
+The first step where you set up the data files in a subdirectory
+called \X, for example, is not necessary; it just further protects
+the original LOGG and PARR files.  Steps (c) & (d) highly recommended.
+
+1) New subdirectory
+
+   a) Make \X
+   b) Copy/v over the desired LOGGx.DAT files as LOGGxS.DAT.  (See the S?)
+   c) Copy/v over the desired PARRx.SET files as PARRxS.SET.  (Optional)
+   d) Copy/v over the desired DISPx.SET files as DISPxS.SET.  (Optional)
+   e) Copy/v over the .CFG file as e.g. LOOKAT.CFG
+   f) In LOOKAT.CFG change the data logging path from ~D\ to ~X\
+   g) In LOOKAT.CFG disable serial ports, i.e. set to -1.  (Optional)
+
+2) Starting program
+
+   LOOKAT.BAT = C:                  [or whatever drives and subdirs]
+                CD \FACEPROG\COM
+                COM98BP simulation \X\LOOKAT.CFG  [never made it case insen.]
+
+3) Changing the PARR file(s) -- done only once
+
+   a) <F3> Algorithm
+      Turn fumigation OFF for all rings.  This should kill all alarms.
+      If already OFF, use space bar to toggle around to OFF again anyway!
+
+   b) <F4> Data logging
+      Place cursor on LOGG file.
+      Hit Right-Arrow to open the <Open/Close> window.
+      Hit "C" to close the file.
+      Repeat for VARR file, STAT file if necessary.
+      Leave PARR file open!
+      Repeat for other rings if necessary.
+
+4) DISP files (graphic display parameters)
+
+   Unless you copied over the DISP files you had been using, program
+   will show graphs using default parameters.  From <F5> Line graph
+   screen, put cursor on a file type and then hit <F2>.  You can
+   then chose which variables to graph, colors, location, and scale
+   for what you are trying to accomplish.
+
+5) <F5> Line graphs <F6> Historic
+
+   This is the only useful option.  After putting up a screen, the
+   Up-Arrow and Down-Arrow keys can be used to move through the
+   data.  The A-key toggles the display of screen averages in the
+   numeric text window rather than point values (numbers are white
+   when they represent averages).
+
+   Don't forget that the "performance percentages" and screen averages
+   are calculated only for the records that are in the line graph
+   display buffer.  This is not every record actually in the time 
+   interval unless the interval is only three hours.
+
+   Also the COM program is non-judgemental.  It calculates percentages
+   and averages regardless of whether fumigation is on or off
+   (important for e.g. gas use but not e.g. wind speed), whether data
+   includes error flags, etc.  COM is no replacement for a good
+   data analysis program, starting with LOGG2DB for example, which
+   makes use of the status bits.
+
+6) Communication ports
+
+   When you start LOOKAT.CFG in a DOS window under Windows 95 or NT,
+   you may get one or two popup windows complaining about nonexistence
+   or conflicts with serial ports.  Just click (Ignore) and get back
+   to your DOS window.  Or, you can set all serial ports in LOOKAT.CFG
+   to -1.

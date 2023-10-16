@@ -1,0 +1,10 @@
+1    3 0x2F8  4 19200 8 1 N  DS    AMBMP:    PORT, BASE, IRQ, BPS,DATA,STOP,P
+2   0x00 21  22         1.0     0.0  2222.  "umol/mol"     "[CO2]multiport"
+3   0x80 13  5          3.57    0.0   -1.0  "L/min"        "Sample flow"
+4   0x40  0  0                              "24VAC"
+5      4                NUMBER OF NODES
+61     1   5  5   -4.1  1  0   ch 1, 55s purge, 5s sampling, rep 1, ambient
+62     2  15 10   -4.2  1  1   ch 2, 55s purge, 5s sampling, rep 1, control
+63     3  20 15   -4.3  2  0   ch 3, 55s purge, 5s sampling, rep 4, ambient
+64     4  45 15   -4.4  2  1   ch 4, 55s purge, 5s sampling, rep 4, ambient
+---END OF INPUT FOR BRAUNSCHWEIG 1999 ---

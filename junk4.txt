@@ -1,0 +1,199 @@
+
+---------- FCP.DPR
+[569] * (10) 6.59 licor.pas plus others now support LI820/LI840          [04-08-04]
+[581] *  (1) 6.64 Licor:    Do not "remove trash" if not LI820/LI840     [05-01-06]
+[582] *           Licor:    Begin changes so a LI840 will work           [05-01-06]
+[635] *  (1) Enclosure temp alarm for AU1 set to 52 (LI-840A)          [2011-10-28]
+[687] *              CalibLi840: new unit for on-line calibrations     [2012-09-24]
+[697] *  (3) 7.20    licor/init_DS_840: comment out configuration      [2013-12-16]
+[699] *  (4) 7.21    licor/init_DS_840:                                [2013-12-17]
+[701] *              (b) nchcodes=4 if LI820, =5 if LI840  
+[704] *  (6) 7.23    licor/init_DS_840: comment out xml2dutec config   [2013-12-19]
+[720] *  (1) Enclosure temp alarm for UK1 set to 52 (LI-840A)          [2016-02-21]
+[981]    IF (site_id = 'AU1') THEN encl_temp_alarm_set[rloop] := 52.0;  {LI840 cell}
+[982]    IF (site_id = 'UK1') THEN encl_temp_alarm_set[rloop] := 52.0;  {LI840 cell}
+
+---------- GLOBALS.PAS
+
+---------- COMD.PAS
+
+---------- COMU.PAS
+
+---------- COMS.PAS
+
+---------- COMDIS.PAS
+
+---------- COMIN.PAS
+
+---------- COMLOG.PAS
+
+---------- COMP.PAS
+[835] *  (6) analog_in: recognize "channel" 24 (LI840)                  [09-08-17]
+[3203]    ELSE IF (range = 32) {LI840}
+
+---------- FACED.PAS
+
+---------- GRA.PAS
+
+---------- OPTOMUX.PAS
+[196]                 (110, 150, 300, 600, 1200, 2400, 4800, 9600, 19200, 38400);
+
+---------- LICOR.PAS
+[70]                  b) Recognize new "channel" 22 for LiCor 820/840 IRGA's
+[73]        04/08/04  e) init_DS_6262, init_DS_840: new, called by licor_init
+[74]                  f) count_rest now set to 50 or 0 (off) in _6262 or _840
+[76]        04/08/05  h) xml2dutec: new for LI820/LI840 use
+[78]        04/12/03  j) supress program init of li820/840 for now -- do otherwise
+[82]                     reinstate program init of li820/840
+[85]                  b) use code 22 for LI820 and code 24 for LI840
+[86]                  c) xml2dutec: handle both 820 and 840 root nodes now
+[87]                  d) init_DS_840: handle LI840 water vapor as well
+[88]  v5.1  05/10/07  e) init_DS_840: add <RAW>FALSE<RAW>
+[89]                  f) add 99 to valid_codes set (a dummy needed for LI840)
+[94]  v7.0  13/12/17  a) init_DS_840: nchcodes := 4 if LI820, := 5 if LI840
+[95]  v7.1  13/12/19  a) init_DS_840: comment out configuration commands to IRGA
+[96]                     Configuration must be done offline by LI840Cfg
+[137]                     model,         {21->6252/6262 22->820 24->840}
+[329]    rootbegin := '<LI840>';  
+[330]    rootend   := '</LI840>';  
+[358]PROCEDURE init_DS_840 (id: INTEGER; VAR err: BOOLEAN);
+[359]{820/840 specific initialization through duTec
+[367]    IF (model = 24) THEN nchcodes := 5;  {LI840}
+[400]  END;  {of procedure 'init_DS_840'}
+[420]          24: init_DS_840  (id, err);
+[483]            24: cmd := '<LI840/3E<DATA/3E?</2FDATA/3E</2FLI840/3E/0A';
+
+---------- TEI49C.PAS
+
+---------- MUSCA.PAS
+
+---------- NETINFO.PAS
+
+---------- DEBUGLOG.PAS
+
+---------- FATALERR.PAS
+
+---------- MAIN.PAS
+[70]       2011-10-25 Config/LOAD: If PORT_GA is LI820/LI840, create and open
+
+---------- MAIN.DFM
+
+---------- COLBTN.PAS
+
+---------- UTILOBJS.PAS
+
+---------- SERVICES.PAS
+
+---------- BACKUP.PAS
+
+---------- EXITSEQ.PAS
+
+---------- RINGBAR.PAS
+
+---------- HEART.PAS
+
+---------- BITMAPS.PAS
+
+---------- ALARMS.PAS
+
+---------- ALARMS.DFM
+
+---------- STATUS.PAS
+
+---------- STATUS.DFM
+
+---------- LBLFORM.PAS
+
+---------- LBLFORM.DFM
+
+---------- RIV.PAS
+
+---------- RVSETUP.PAS
+
+---------- CALIBMAN.PAS
+[15]v02.01 2012-09-18 Provide button and code for CalLi840 unit.
+[39]    btnLI840: TBitBtn;
+[82]Uses CalLi840;
+[222]  IF (Sender = btnLI840) THEN BEGIN  {*** ONLY WORKS WHEN 1 RING CHECKED ***}
+[225]        THEN CalLi840.Select (rlabel[ring]);
+
+---------- CALIBMAN.DFM
+[177]  object btnLI840: TBitBtn
+[182]    Caption = '&LI-820 LI840'
+
+---------- CALIBAUT.PAS
+
+---------- CALIBAUT.DFM
+
+---------- DATACOMM.PAS
+[369]     (editProtocol.Text = 'LI840')  OR
+[390]     (editProtocol.Text = 'LI840')  OR
+[460]     (editProtocol.Text = 'LI840')  OR
+
+---------- DATACOMM.DFM
+
+---------- NETLOG.PAS
+
+---------- WATCHDOG.PAS
+
+---------- WATCHDOG.DFM
+
+---------- LINEGRAF.PAS
+
+---------- LINEGRAF.DFM
+
+---------- LGSELECT.PAS
+
+---------- LGSELECT.DFM
+
+---------- LGSETUP.PAS
+
+---------- LGSETUP.DFM
+
+---------- MPSAMPLE.PAS
+
+---------- MPSAMPLE.DFM
+
+---------- EPHEM.PAS
+
+---------- EPHEM.DFM
+
+---------- COMPARE.PAS
+
+---------- COMPARE.DFM
+
+---------- SOL.PAS
+
+---------- AVSD.PAS
+
+---------- CONNECT.PAS
+
+---------- H2OVAPOR.PAS
+
+---------- H2OVAPOR.DFM
+
+---------- TEMPLATE.PAS
+
+---------- TEMPLATE.DFM
+
+---------- SERIAL.PAS
+[28]  speed:  DWORD;    {Number e.g. 38400}
+[123]  speed:  DWORD;    {Number e.g. 38400}
+
+---------- SOCKET.PAS
+
+---------- FESTOCI.PAS
+
+---------- LINEIN.PAS
+[14]v1.0  2011-11-02  Original for LI840A and WMT701
+[46]LI840
+[248]     (UpperCase(protocol) = 'LI840') THEN BEGIN
+[255]    IF (UpperCase(protocol) = 'LI840') THEN BEGIN
+[256]      sbegin :=   '<LI840>';
+[257]      send   :=  '</LI840>';
+[418]  {LI-840A}
+[419]  IF (UpperCase(protocol) = 'LI840') THEN BEGIN
+
+---------- IPSERV.PAS
+
+---------- C:\FACEPROG\DELPHI4\PROJECTS\JN\CRT32.PAS

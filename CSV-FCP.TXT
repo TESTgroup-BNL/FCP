@@ -1,0 +1,89 @@
+NETLOG.PAS  v01.09 2012-09-16
+
+
+  msg := rlabel[ring];
+
+  msg := msg + ',' + showdate(comd.date);
+  msg := msg + ',' + comd.time;
+
+  fvw (Sol.helios_var.sun_alt.degrees, 6, 2);
+  fvw (Sol.helios_var.sun_azi.degrees, 3, 0);
+
+  status := status_var[ring].latched;
+
+  ivw ((status Shr 4) And 3, 1);  {treatment mode}
+
+  ivw (1-((status Shr  7) And 1), 1);    {fumigation enabled}
+  ivw (1-((status Shr  9) And 1), 1);        {temperature OK}
+  ivw (1-((status Shr 15) And 1), 1);               {wind OK}
+  ivw (ORD(((status Shr  6) And 3) = 0), 1);  {fumigation ON}
+
+  ivw ((status Shr  8) And 1 {debugging}, 1);
+
+  ivw ((status Shr 11) And 1 {calibenab}, 1);
+  ivw ((status Shr 10) And 1 {calibact},  1);
+
+  ivw ((status Shr 12) And 1 {alarm_pv},  1);
+  ivw ((status Shr 13) And 1 {alarm_gc},  1);
+  ivw ((status Shr 14) And 1 {alarm_dc},  1);
+
+  fvw (wspeed[ring],                  5, 2);
+  WITH wspeed_avsd[ring] DO
+    IF mean > 0.0
+      THEN fvw (stddev/mean,          4, 2)
+      ELSE fvw (0.0,                  4, 2);
+  ivw (wwdir[ring],                   3);
+  ivw (ROUND(stdwdir[ring].Integral), 3);
+  fvw (temp1[ring],                   5, 1);
+  fvw (temp2[ring],                   5, 1);
+  fvw (temp3[ring],                   5, 1);
+  fvw (10.0*airpres[ring],            4, 0);
+  fvw (ph2o[ring],                    4, 0);
+  fvw (solrad[ring],                  4, 0);
+  fvw (propc[ring],                   6, 1);
+  fvw (propresp[ring],                6, 1);
+  fvw (gcambi[ring],                  6, 1);
+  fvw (gccntl[ring],                  6, 1);
+  fvw (ambient_base.Integral,         6, 1);
+  fvw (gcset[ring],                   6, 1);
+  fvw (gcgrab[ring],                  6, 1);
+  fvw (agc1m[ring].Integral,          6, 1);
+  fvw (agc5m[ring].Integral,          6, 1);
+
+  WRITE (f,'P,');
+  WRITE (f,'      DATE,');
+  WRITE (f,'    TIME,');
+  WRITE (f,'SUNALT,');
+  WRITE (f,'AZI,');
+  WRITE (f,'M,');
+  WRITE (f,'E,');
+  WRITE (f,'T,');
+  WRITE (f,'W,');
+  WRITE (f,'F,');
+  WRITE (f,'D,');
+  WRITE (f,'C,');
+  WRITE (f,'X,');
+  WRITE (f,'V,');
+  WRITE (f,'G,');
+  WRITE (f,'Q,');
+  WRITE (f,'   WS,');
+  WRITE (f,' COV,');
+  WRITE (f,' WD,');
+  WRITE (f,'STD,');
+  WRITE (f,' TAIR,');
+  WRITE (f,'TENCL,');
+  WRITE (f,' TAUX,');
+  WRITE (f,'  BP,');
+  WRITE (f,' H2O,');
+  WRITE (f,'RSOL,');
+  WRITE (f,'   PVC,');
+  WRITE (f,'   PVR,');
+  WRITE (f,'  CAMB,');
+  WRITE (f,' CCONT,');
+  WRITE (f,' CBASE,');
+  WRITE (f,'  CSET,');
+  WRITE (f,' CGRAB,');
+  WRITE (f,' C1MIN,');
+  WRITE (f,' C5MIN');
+  WRITELN (f);
+  END;  {of procedure 'header'}

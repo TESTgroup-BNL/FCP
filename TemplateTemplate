@@ -1,0 +1,147 @@
+*************************************************************************
+
+TYPE
+  TXXXXX = CLASS(TTemplate)
+    PROCEDURE OnCloseForm (Sender: TObject; VAR Action: TCloseAction);
+    PROCEDURE OnClickButton (Sender: TObject);
+    PROCEDURE OnClickCheckBox (Sender: TObject);
+    PRIVATE
+      { Private declarations }
+      lblError: TLabel;
+      gbRings: TGroupBox;
+        cbRings: ARRAY [1..MAXRINGS] OF TCheckBox;
+      gbTypes: TGroupBox;
+        cbTypes: ARRAY [FT1ST..FTLAST] OF TCheckBox;
+      gbProgress: TGroupBox;
+        lbProgress: TListBox;
+      PROCEDURE MakeChildren;
+      PROCEDURE Apply;
+      PROCEDURE Refresh;
+    PUBLIC
+      { Public declarations }
+    END;
+
+PROCEDURE Select;
+PROCEDURE UpdateIt;
+
+IMPLEMENTATION
+
+VAR frmXXXXX: TXXXXX;
+
+{-------------------------------------------------------------}
+
+PROCEDURE Select;
+{Come here when this menu item selected on main form}
+BEGIN
+  IF NOT Assigned (frmXXXXX) THEN BEGIN
+    frmXXXXX := TXXXXX.Create (Application);
+    frmXXXXX.MakeChildren;
+    END;
+  frmXXXXX.Show;
+  frmXXXXX.SetFocus;
+  frmXXXXX.WindowState := wsNormal;
+  frmXXXXX.Refresh;
+  END;  {of procedure 'Select'}
+{-------------------------------------------------------------}
+
+PROCEDURE TXXXXX.Apply;
+{Apply changes to controls to the working static variables}
+BEGIN
+  Refresh;
+  END;  {of procedure 'Apply'}
+{-------------------------------------------------------------}
+
+PROCEDURE TXXXXX.Refresh;
+{Refresh the controls from the working static variables}
+BEGIN
+  END;  {of procedure 'Refresh'}
+{-------------------------------------------------------------}
+
+PROCEDURE TXXXXX.Refresh;
+{Update controls on screen after sample/control interval}
+BEGIN
+  IF Assigned (frmXXXXX) THEN BEGIN
+    END;  {form exists}
+  END;  {of procedure 'Refresh'}
+{-------------------------------------------------------------}
+
+PROCEDURE TXXXXX.MakeChildren;
+{Dynamically create controls}
+BEGIN
+  {Form parameters}
+  With Self DO BEGIN
+    Caption :=
+      'Backup binary data files to secondary storage with .BAC extension';
+    Width := (Screen.Width * 4) DIV 5;
+    OnClose := OnCloseForm;
+    END;
+
+  {Command buttons}
+  WITH btnRefresh DO BEGIN
+    Visible := FALSE;
+    Enabled := FALSE;
+    END;
+  WITH btnApply DO BEGIN
+    Visible := FALSE;
+    Enabled := FALSE;
+    END;
+  WITH btnHelp DO BEGIN
+    Visible := FALSE;
+    Enabled := FALSE;
+    END;
+  WITH btnOK DO BEGIN
+    Top   := gbTypes.Top + gbTypes.Height + 20;
+    Left  := gbTypes.Left;
+    Width := gbTypes.Width;
+    Caption := '&Go';
+    OnClick := OnClickButton;
+    END;
+  WITH btnCancel DO BEGIN
+    Top := btnOK.Top;
+    Left := Self.Width - Width - 20;
+    OnClick := OnClickButton;
+    END;
+  
+  END;  {of procedure MakeChildren}
+{-------------------------------------------------------------}
+
+PROCEDURE TXXXXX.OnCloseForm (Sender: TObject; VAR Action: TCloseAction);
+BEGIN
+  OnClickButton (TObject(btnCancel));
+  END;  {of procedure OnCloseForm}
+{-------------------------------------------------------------}
+
+PROCEDURE TXXXXX.OnClickButton (Sender: TObject);
+VAR ring: INTEGER;
+BEGIN
+
+  IF (Sender = btnOK) THEN BEGIN  {which is now the Go button}
+    lbProgress.Clear;
+    FOR ring := 1 TO numrings DO BEGIN
+      IF SRing[ring] THEN BEGIN
+        progress_item ('RING '+rlabel[ring]);
+        databack (ring);  {LOGG, VARR, PARR files}
+        END;  {ring is checked}
+      END; {loop over rings}
+    progress_item ('--------------------------');
+    END;  {go button}
+
+  IF (Sender = btnCancel) THEN BEGIN
+    Self.Release;
+    frmXXXXX := NIL;
+    END;
+  
+  END;  {of procedure OnClickButton}
+{-------------------------------------------------------------}
+
+INITIALIZATION
+
+BEGIN
+  END;
+
+FINALIZATION
+
+BEGIN
+  END;
+
+*************************************************************************

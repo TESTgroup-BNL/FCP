@@ -1,0 +1,24 @@
+1   2 0x2F8  3 19200 8 1 N  DS    PORT,BASE,IRQ,BPS,DATA,STOP,PARITY,PROTOCOL
+2      0x80  0  5 400  0 2222  "umol/mol"  "[gas]"
+3        -1  0  0   1  0 -999  "L/min"     "Flow"
+4      0x40  4  0              "24VAC"
+5  0xC0   16                    NODE BOARD ADDRESS, NUMBER OF NODES
+60  0     8  2  -99 720         CHAN, TP, TS, MINFLOW, TIMEOUT
+61  2     8  2  -99 720
+62  4     8  2  -99 720
+63  6     8  2  -99 720
+64  8     8  2  -99 720
+65 10     8  2  -99 720
+66 12     8  2  -99 720
+67 14     8  2  -99 720
+68  1     8  2  -99 720
+69  3     8  2  -99 720
+70  5     8  2  -99 720
+71  7     8  2  -99 720
+72  9     8  2  -99 720
+73 11     8  2  -99 720
+74 13     8  2  -99 720
+75 15     8  2  -99 720
+FOR HELP, SEE FILE AMBMPDEF.TXT
+END-OF-FILE MULTIPORT SAMPLER FOR ZA1
+(J.N. 2004-12-02)

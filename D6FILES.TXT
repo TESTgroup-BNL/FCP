@@ -1,0 +1,37 @@
+Directory of C:\PROGRA~1\BORLAND\DELPHI6\BIN
+
+01-05-22  06:00a               705,536 DCC32.EXE
+01-05-22  06:00a                59,904 rlink32.dll
+
+Directory of C:\PROGRA~1\BORLAND\DELPHI6\LIB
+
+01-05-22  06:00a                28,898 Messages.dcu
+01-05-22  06:00a                10,579 SysConst.dcu
+01-05-22  06:00a                 3,575 SysInit.dcu
+01-05-22  06:00a               103,851 System.dcu
+01-05-22  06:00a               116,393 SysUtils.dcu
+01-05-22  06:00a                 3,863 Types.dcu
+01-05-22  06:00a               615,526 Windows.dcu
+
+
+02-06-13  04:59p                   368 DP.BAT
+rem INVOKE COMMAND LINE DELPHI COMPILER WITH SELECTED OPTIONS
+rem J.N. 1998-09-28
+rem J.N. 2002-06-10  Use REM to select Delphi4 or Delphi6
+rem J.N. 2002-06-13  Delphi6 only w/ separate BIN and LIB macros
+set BIN=c:\progra~1\borland\delphi6\bin
+set LIB=c:\progra~1\borland\delphi6\lib
+%BIN%\dcc32 /U%LIB% /DDELPHI /$N+ /$D+ /$L+ /$Q+ /$R+ /GD /H %1 %2 %3 %4 %5
+
+02-03-21  10:47a                   222 BUILDCOM.BAT
+rem BUILDCOM.BAT 2002-03-21
+rem B     Do a complete build
+rem DUNIT CLOCKS.PAS, etc. are to be compiled as units
+rem $A-   PACKED RECORD used by default for COM98 binary record compatibility
+dp /B /DUNIT /$A- com2002
+
+
+rem BUILDMP.BAT 2002-06-14
+set BIN=c:\progra~1\borland\delphi6\bin
+set LIB=c:\progra~1\borland\delphi6\lib
+%BIN%\dcc32 /U%LIB% /B /$N+ /$D+ /$H- /$L+ /$Q+ /$R+ /GD /H %1 %2 %3 ring00

@@ -1,0 +1,18 @@
+1   1 0x3F8  4 19200 8 1 N DS PORT,BASE,IRQ,BPS,DATA,STOP,PARITY,PROTOCOL
+2      0x05 21 22  1  0  999  "umol/mol"  "[gas]"
+3        -1  0  0  1  0  999  "L/min"     "Flow"
+4      0x4F  4  0                         "+24VAC"
+5  0x4F  3                    NODE BOARD ADDRESS, NUMBER OF NODES
+60 12    25 5   -99   720     Channel, TPurge, TSample, MinFlow, TimeOut Ring 4
+61 11    25 5   -99   720                                                Ring 5
+62 10    25 5   -99   720                                                Ring 6
+63
+64
+65
+66
+67
+68
+69
+J.N. 2005-03-08
+FOR HELP, SEE FILE AMBMPDEF.TXT
+END-OF-FILE AMBIENT MULTIPORT FOR NV1
