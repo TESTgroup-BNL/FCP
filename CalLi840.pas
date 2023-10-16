@@ -33,6 +33,7 @@ type
     gbIRGA: TGroupBox;
     rb820: TRadioButton;
     rb840: TRadioButton;
+	  rb850: TRadioButton;
     cbWhich: TComboBox;
     lblPlot: TLabel;
     lblWhich: TLabel;
@@ -136,6 +137,7 @@ begin
             ADoc.XmlFormat := xfReadable;
             IF (XMLBegin = '<LI820>') THEN node := '/LI820/POLY/DATE';
             IF (XMLBegin = '<LI840>') THEN node := '/LI840/POLY/DATE';
+			      IF (XMLBegin = '<LI850>') THEN node := '/LI850/POLY/DATE';
             ANode := ADoc.Root.FindNode (node);
             IF (ANode <> NIL)
               THEN CalLi840Form.editSN.Text := ANode.Value
@@ -222,6 +224,7 @@ func := cbWhich.Text;
 vp := StrToInt(editVPI.Text);
 IF rb820.Checked THEN BEGIN XMLbegin := '<LI820>'; XMLend := '</LI820>'; END;
 IF rb840.Checked THEN BEGIN XMLbegin := '<LI840>'; XMLend := '</LI840>'; END;
+IF rb850.Checked THEN BEGIN XMLbegin := '<LI850>'; XMLend := '</LI850>'; END;
 spanCO2    := editCO2Span.Text;
 span2CO2   := editCO2Span2.Text;
 spanH2O    := editH2OSpan.Text;

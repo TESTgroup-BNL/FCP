@@ -126,7 +126,7 @@ object CalLi840Form: TCalLi840Form
     Left = 16
     Top = 233
     Width = 145
-    Height = 89
+    Height = 118
     Caption = 'IRGA model'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -149,8 +149,16 @@ object CalLi840Form: TCalLi840Form
       Width = 113
       Height = 17
       Caption = 'LI-8&40'
-      Checked = True
       TabOrder = 1
+    end
+    object rb850: TRadioButton
+      Left = 8
+      Top = 86
+      Width = 113
+      Height = 17
+      Caption = 'LI-8&50'
+      Checked = True
+      TabOrder = 2
       TabStop = True
     end
   end

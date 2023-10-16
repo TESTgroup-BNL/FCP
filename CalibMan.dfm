@@ -179,7 +179,7 @@ object CalibMan: TCalibMan
     Top = 318
     Width = 80
     Height = 35
-    Caption = '&LI-820 LI840'
+    Caption = '&LI-820/840/850'
     TabOrder = 6
     OnClick = OnClickButton
     NumGlyphs = 2

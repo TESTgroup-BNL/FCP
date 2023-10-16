@@ -583,7 +583,7 @@ BEGIN WITH addrdef DO BEGIN
     READ (ifile, offscale);
     s := getchunk (ifile,'"');  unit_name := getchunk (ifile,'"');
     {LiCor memory allocation}
-    IF exists AND (channel IN [21,22,24]) THEN BEGIN
+    IF exists AND (channel IN [21,22,24,27]) THEN BEGIN
       licor_alloc (address, code);
       IF (code = 0) THEN BEGIN
         licor_addcode (address, ROUND(range), code);

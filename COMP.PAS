@@ -1611,7 +1611,7 @@ VAR positions: Word;
 BEGIN
   WITH daqc, data DO 
   
-  IF exists AND (channel IN [0..15, 21,22,24, 40..49]) THEN BEGIN
+  IF exists AND (channel IN [0..15, 21,22,24, 27, 40..49]) THEN BEGIN
     protocol := DataComm.Ports[port].protocol;
       
     IF ABS(range) < 100.0
@@ -1653,7 +1653,7 @@ BEGIN
           END;  {ADC board 00..15}
 
         {LiCor serial reads}
-        IF (channel IN [21, 22, 24]) THEN BEGIN
+        IF (channel IN [21, 22, 24, 27]) THEN BEGIN
           licor_input (address, errcode);
           error := error OR (errcode <> 0);
           IF errcode = 0

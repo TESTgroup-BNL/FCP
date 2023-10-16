@@ -245,7 +245,8 @@ BEGIN
     END;
 
   IF (UpperCase(protocol) = 'LI820') OR
-     (UpperCase(protocol) = 'LI840') THEN BEGIN
+     (UpperCase(protocol) = 'LI840') OR
+     (UpperCase(protocol) = 'LI850') THEN BEGIN
     FTermOut := CHR(10);
     FTermIn  := CHR(10);
     IF (UpperCase(protocol) = 'LI820') THEN BEGIN
@@ -255,6 +256,10 @@ BEGIN
     IF (UpperCase(protocol) = 'LI840') THEN BEGIN
       sbegin :=   '<LI840>';
       send   :=  '</LI840>';
+      END;
+	IF (UpperCase(protocol) = 'LI850') THEN BEGIN
+      sbegin :=   '<LI850>';
+      send   :=  '</LI850>';
       END;
     OutputDebug (vp, 'Transaction for virtual port ' + IntToStr(vp) + FormatDateTime(' hh:nn:ss.zzz',Time), TRUE);
     command  := sbegin + '<DATA>?</DATA>' + send + FTermOut;
@@ -416,7 +421,8 @@ BEGIN
   {none}
 
   {LI-840A}
-  IF (UpperCase(protocol) = 'LI840') THEN BEGIN
+  IF (UpperCase(protocol) = 'LI840') OR
+     (UpperCase(protocol) = 'LI850') THEN BEGIN
     {CO2 mixing ratio in dry air}
     {Water vapor pressue derived from mixing fraction and total pressure}
     {Water vapor pressue derived from dewpoint and LI-610 formula}

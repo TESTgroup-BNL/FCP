@@ -367,6 +367,7 @@ IF (Sender = btnRaw) THEN BEGIN
       END;
   IF (editProtocol.Text = 'LI820')  OR
      (editProtocol.Text = 'LI840')  OR
+     (editProtocol.Text = 'LI850')  OR
      (editProtocol.Text = 'WMT700') OR
      (editProtocol.Text = 'CSI1')   OR
      (Ports[VPI_current].switch=3)  THEN
@@ -388,6 +389,7 @@ IF (Sender = btnStats) THEN BEGIN
       END;
   IF (editProtocol.Text = 'LI820')  OR
      (editProtocol.Text = 'LI840')  OR
+     (editProtocol.Text = 'LI850')  OR
      (editProtocol.Text = 'WMT700') OR
      (editProtocol.Text = 'CSI1')   OR
      (Ports[VPI_current].switch=3)  THEN
@@ -458,6 +460,7 @@ IF (Sender = cbPause) AND (cbPause.Tag <> 0) THEN BEGIN
       END;
   IF (editProtocol.Text = 'LI820')  OR
      (editProtocol.Text = 'LI840')  OR
+     (editProtocol.Text = 'LI850')  OR
      (editProtocol.Text = 'WMT700') OR
      (editProtocol.Text = 'CSI1')   OR
      (Ports[VPI_current].switch=3)  THEN

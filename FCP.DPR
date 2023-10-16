@@ -751,8 +751,8 @@ USES
  *}
     
 CONST version_name = 'FCP';
-      version_no   = '7.34';
-      version_date = '2022-12-xx';
+      version_no   = '7.36b';
+      version_date = '2023-08-17';
 
 CONST nl  = CHR(13) + CHR(10);
       nl2 = nl + CHR(10);

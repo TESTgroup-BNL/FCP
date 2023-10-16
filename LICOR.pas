@@ -329,6 +329,10 @@ BEGIN
     rootbegin := '<LI840>';  
     rootend   := '</LI840>';  
     END;
+  IF licor_ptr^[id]^.model = 27 THEN BEGIN
+    rootbegin := '<LI850>';  
+    rootend   := '</LI850>';  
+    END;
 
   msg := rootbegin + cmd + rootend;
 
@@ -364,7 +368,7 @@ BEGIN
 
     {Override _addcode results}
                          nchcodes := 4;  {LI820}
-    IF (model = 24) THEN nchcodes := 5;  {LI840}
+    IF (model in [24, 27]) THEN nchcodes := 5;  {LI840}
     chcode[1] := 42;  {Cell temperature oC}
     chcode[2] := 43;  {Cell pressure kPa}
     chcode[3] := 22;  {CO2 umol/mol=ppm}
@@ -417,7 +421,8 @@ BEGIN
         CASE model OF
           21: init_DS_6262 (id, err);
           22,
-          24: init_DS_840  (id, err);
+          24,
+		  27: init_DS_840  (id, err);
           END; {case}
         IF err THEN errcode := 12;          {optomux error has occurred}
         errcode_save := errcode;
@@ -474,18 +479,19 @@ BEGIN
       IF daqc = 'DS' THEN WITH optomux_var DO BEGIN
       {duTec DAQC using optomux/comm_tp4 communications drivers}
         IF auto_print <= 0.0 THEN BEGIN
-          IF model IN [22,24] THEN REPEAT  {discard any trash -- LI8xx only}
+          IF model IN [22,24,27] THEN REPEAT  {discard any trash -- LI8xx only}
             dutec_in (port, address, 'PP', msg);
             UNTIL (msg = '');
           CASE model OF
             21: cmd := '*12';
             22: cmd := '<LI820/3E<DATA/3E?</2FDATA/3E</2FLI820/3E/0A';
             24: cmd := '<LI840/3E<DATA/3E?</2FDATA/3E</2FLI840/3E/0A';
+			27: cmd := '<LI850/3E<DATA/3E?</2FDATA/3E</2FLI850/3E/0A';
             END; {case}
           dutec_out (port, address, cmd);
           err := err OR optomux_var.error;
           END;
-        IF (model IN [22,24]) THEN Windows.Sleep (100);
+        IF (model IN [22,24,27]) THEN Windows.Sleep (100);
         dutec_in (port, address, 'P', msg);
         err := err OR optomux_var.error;
         IF NOT err
