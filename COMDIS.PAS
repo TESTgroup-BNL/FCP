@@ -1042,9 +1042,9 @@ BEGIN
 
     oouttext(1.005,1.02,11,'ESC');
       SetColor(10); OutText(' Quit');
-    oouttext(1.005,0.98,11,CHR(27)+CHR(26));
+    oouttext(1.005,0.98,11,'<- ->');
       SetColor(10); OutText('Cursor');
-    oouttext(1.005,0.94,11,CHR(25)+CHR(24));
+    oouttext(1.005,0.94,11,'UP DN');
       SetColor(10); OutText(' MORE');
     oouttext(1.005,0.90,11,'--------');
   

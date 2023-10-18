@@ -1072,7 +1072,7 @@ BEGIN
   xywrite(55, 8,Yellow,'RING '+rlabel[no]);
   xywrite(62, 8,LightRed,   descriptor[no]);
   xywrite(55, 9,10,'--------------------------');
-  xywrite(55,11,10,'<'+CHR(24)+CHR(25)+'>   Select field');
+  xywrite(55,11,10,'<UP DN>   Select field');
   xywrite(55,12,10,'<SP>   Open change window');
   xywrite(55,13,10,'<CR>   Accept new value');
   mouse_clear (0);
@@ -1095,7 +1095,7 @@ BEGIN
       mouse_add (2, 55, 80, 10, 16, ORD('+'), 0);
       END
     ELSE BEGIN
-      xywrite(55,10,10,'<'+CHR(27)+CHR(26)+'>');
+      xywrite(55,10,10,'<<- ->>');
       xywrite(55,14,10,'<PgUp> Previous menu');
       mouse_add (3, 55, 56, 10, 10, 0, 75);
       mouse_add (3, 57, 80, 10, 10, 0, 77);
@@ -2238,8 +2238,8 @@ BEGIN
 PROCEDURE template;
 BEGIN
   sidebar ('DIRECT CONTROL OF GAS FLOW VALVE ', ringno);
-  xywrite (50,     3, LightGreen,'<'+CHR(24)+'>   Open  (manual mode)');
-  xywrite (50,     4, LightGreen,'<'+CHR(25)+'>   Close (manual mode)');
+  xywrite (50,     3, LightGreen,'<UP>   Open  (manual mode)');
+  xywrite (50,     4, LightGreen,'<DN>   Close (manual mode)');
   xywrite (50,     5, LightGreen,'<F1>  Help pages');
   xywrite (col,    3, cd, '[A] Automatic');
   xywrite (col,    4, cd, '[S] Semi-automatic (uses [C] entry)');
@@ -2690,7 +2690,8 @@ IF command = 'CONTROL' THEN WITH pv_motor^[ringno] DO BEGIN
     {Manu} 3: cont_use := propc[ringno];
     END;  {of case}
   correction := cont_use - resp_use;
-  tcalc := 1000.0 * correction / kp;                      {time units are ms}
+  IF kp = 0 THEN tcalc:= 0   //Arbitrary default for testing
+  ELSE tcalc := 1000.0 * correction / kp;                      {time units are ms}
   tstep := f * ABS(tcalc);
   IF tstep > tmax THEN tlimit := tmax
                   ELSE tlimit := tstep;

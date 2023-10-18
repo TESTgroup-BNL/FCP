@@ -359,6 +359,11 @@ BEGIN
     LastErrorProcess ('BitRead/parse', 6);
 
   BitRead := fSuccess;
+
+  IF FDebugEnable AND (NOT FDebugPause) AND (FDebugMemo <> NIL) THEN BEGIN
+    FDebugMemo.Lines.Add ('BitRead: ' + answer + '  bool: ' + BoolToStr(b));
+    END;
+
   END;  {function BitRead}
 
   {--------------------------------------------------------------}
@@ -414,6 +419,10 @@ BEGIN
       END;
     IF NOT fSuccess THEN
       LastErrorProcess ('WordRead/convert', 7);
+    END;
+
+  IF FDebugEnable AND (NOT FDebugPause) AND (FDebugMemo <> NIL) THEN BEGIN
+    FDebugMemo.Lines.Add ('WordRead: ' + t + '  ans: ' + answer + '  int: ' + IntToStr(i));
     END;
 
   WordRead := fSuccess;
